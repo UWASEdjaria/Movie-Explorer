@@ -1,16 +1,73 @@
-# React + Vite
+# React Movie Explorer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React SPA to explore, search, filter, and favorite movies. Built with Vite + Tailwind CSS with dark/light mode support.
 
-Currently, two official plugins are available:
+# Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+View movie details
 
-## React Compiler
+Search movies by name
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Filter by category/genre
 
-## Expanding the ESLint configuration
+Add movies to favorites (saved in localStorage)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Routing between pages using React Router
+
+Responsive design with dark/light mode
+
+# Pages & Structure
+src/
+├── pages/
+│   ├── Home.jsx             # Movie list and search
+│   ├── MovieDetails.jsx     # Single movie details
+│   └── Favorites.jsx        # Favorite movies
+│
+├── components/
+│   ├── MovieCard.jsx        # Movie display card
+│   ├── Navbar.jsx           # Navigation bar
+│   ├── SearchBar.jsx        # Search input
+│   └── CategoryFilter.jsx   # Filter by genre
+│
+├── hooks/
+│   ├── useFetchMovies.js    # Custom hook for fetching movies
+│   └── useFavorites.js      # Hook to manage favorites with localStorage
+│
+├── utils/
+│   └── api.js               # API calls and helper functions
+│
+├── App.jsx                  # Routes & layout
+└── main.jsx                 # Entry point
+
+# Installation
+git clone <repo-url>
+cd movie-explorer
+npm install
+npm run dev
+
+Usage
+
+Open http://localhost:5173 (Vite default)
+
+Browse movies on Home page
+
+Search or filter movies by category
+
+Click Add to Favorites to save movies
+
+Toggle dark/light mode using the navbar
+
+# Technologies
+
+React + JSX
+
+React Router
+
+Tailwind CSS (with dark mode)
+
+JavaScript (ES6+)
+
+TVMaze API for movie data
+Live Demo
+
+[]

@@ -1,31 +1,33 @@
-import { useState, useEffect } from "react";
+import React, { createContext, useEffect, useState } from 'react';
 
-function useFetchMovies() {
-  const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+export const DataContext = createContext(); 
+
+export function useFetchMovies() {
+
+  const [movies, setMovies] = useState([]);     // start with empty array
+  const [loading, setLoading] = useState(true); // start as true
+  const [error, setError] = useState(null);     // handle fetch errors
 
   useEffect(() => {
-    const fetchMovies = async () => {
-      const url = "https://api.tvmaze.com/shows";
+    
+    async function fetchMovies() {
       try {
-        const response = await fetch(url);
+        const response = await fetch("https://api.tvmaze.com/shows");
         if (!response.ok) {
-          throw new Error(`Response status: ${response.status}`);
+          throw new Error(`HTTP error! Status ${response.status}`);
         }
-        const result = await response.json();
-        setMovies(result); // store data in state
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
 
-    fetchMovies();
+        const data = await response.json();
+        setMovies(data); 
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false); 
+      }
+    }
+
+    fetchMovies(); 
   }, []);
 
   return { movies, loading, error };
 }
-
-export default useFetchMovies;

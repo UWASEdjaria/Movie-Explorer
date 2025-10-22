@@ -5,6 +5,7 @@ import './App.css'
 import Home from './Pages/Home'
 import MovieDetails from './Pages/MovieDetails'
 import Favorites from './Pages/Favorites'
+import MovieCard from './components/MovieCard'
 import Navbar from './components/Navbar'
 
 
@@ -20,6 +21,7 @@ function App() {
       <Route path='/' element={<Home/>} />
       <Route path='/MovieDetails' element={<MovieDetails/>} />
       <Route path='/Favorites' element={<Favorites/>} />
+      <Route path='MovieCard' element={<MovieCard/>} />
     </Routes>
    </Router>
     </nav>

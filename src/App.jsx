@@ -8,6 +8,7 @@ import Favorites from './Pages/Favorites'
 import Navbar from './components/Navbar'
 
 
+
 function App() {
  
   return (

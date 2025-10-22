@@ -1,9 +1,13 @@
-import React from 'react'
+import React from "react";
 
-function CategoryFilter() {
+export default function CategoryFilter() {
   return (
-    <div>CategoryFilter</div>
-  )
+    <select className="border p-2 rounded-lg w-80 mt-4">
+      <option>All Categories</option>
+      <option>Drama</option>
+      <option>Comedy</option>
+      <option>Action</option>
+      <option>Sci-Fi</option>
+    </select>
+  );
 }
-
-export default CategoryFilter

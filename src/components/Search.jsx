@@ -1,13 +1,13 @@
 import React from "react";
 
-function Search({ searchTerm, setSearchTerm }) {
+function Search({ value, onChange }) {
   return (
     <div className="w-full max-w-md mt-6">
       <input
         type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)} // updates parent state
         placeholder="Search movies..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
         className="w-full text-white p-3 mb-5 rounded-lg outline-none 
                    bg-amber-800 border border-amber-800 
                    shadow-lg focus:ring-2 focus:ring-amber-500 

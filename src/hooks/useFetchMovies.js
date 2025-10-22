@@ -1,23 +1,31 @@
-import React, { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
-function FetchMovie() {
-  const [data, setData] = useState(null);
+function useFetchMovies() {
+  const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
-    const FetchMovie = async () => {
+    const fetchMovies = async () => {
+      const url = "https://api.tvmaze.com/shows";
       try {
-        const response = await fetch("https://api.tvmaze.com/shows");
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
         const result = await response.json();
-        setData(result);
-      } catch (error) {
-        console.error("Error fetching movie data:", error);
+        setMovies(result); // store data in state
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
     };
-    FetchMovie();
+
+    fetchMovies();
   }, []);
-  return (
-    <div>
-      {data ? <p>{data.message}</p> : <p>Loading...</p>}
-    </div>
-  );
+
+  return { movies, loading, error };
 }
-export default FetchMovie;
+
+export default useFetchMovies;

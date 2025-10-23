@@ -50,7 +50,7 @@ function Player() {
 
   return (
     <div className="flex flex-col items-center mt-10">
-      <h1 className="text-3xl font-bold mb-4">Now playing: {movie.name}</h1>
+      <h1 className="mb-4 text-3xl font-bold">Now playing: {movie.name}</h1>
       <img
         src={
           movie.image?.original ||
@@ -59,10 +59,10 @@ function Player() {
           "/images/movie.jpg"
         }
         alt={movie.name}
-        className="w-full max-w-xl h-auto rounded mb-4"
+        className="w-full h-auto max-w-xl mb-4 rounded"
       />
 
-      <div className="w-full max-w-xl bg-gray-200 p-6 rounded text-left">
+      <div className="w-full max-w-xl p-6 text-left bg-gray-200 rounded">
         <p>
           <strong>Genres:</strong>{" "}
           {movie.genres?.join ? movie.genres.join(", ") : movie.genres}
@@ -76,20 +76,20 @@ function Player() {
       </div>
 
       <div className="w-full max-w-xl mt-6">
-        <div className="w-full bg-gray-300 rounded h-3 overflow-hidden">
+        <div className="w-full h-3 overflow-hidden bg-gray-300 rounded">
           <div
-            className="bg-amber-600 h-3"
+            className="h-3 bg-amber-600"
             style={{ width: `${progress}%`, transition: "width 0.18s linear" }}
           />
         </div>
-        <div className="flex justify-between items-center mt-3">
+        <div className="flex items-center justify-between mt-3">
           <div className="text-sm text-gray-600">
             {Math.round((progress / 100) * 100)}%
           </div>
           <div className="flex gap-2">
             <button
               onClick={() => setIsPlaying((s) => !s)}
-              className="bg-amber-600 text-white px-4 py-1 rounded"
+              className="px-4 py-1 text-white rounded bg-amber-600"
             >
               {isPlaying ? "Pause" : progress >= 100 ? "Replay" : "Play"}
             </button>
@@ -98,7 +98,7 @@ function Player() {
                 setProgress(0);
                 setIsPlaying(true);
               }}
-              className="border px-3 py-1 rounded"
+              className="px-3 py-1 border rounded"
             >
               Restart
             </button>

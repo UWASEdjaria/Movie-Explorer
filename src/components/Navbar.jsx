@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
 function Navbar() {
+  // Theme state, stored in localStorage
   const [theme, setTheme] = useState(() => {
     try {
       return localStorage.getItem("theme") || "light";
@@ -10,11 +11,12 @@ function Navbar() {
     }
   });
 
+  // Apply dark/light mode
   useEffect(() => {
     try {
       localStorage.setItem("theme", theme);
     } catch {
-      /* ignore */
+      {/*ignore*/}
     }
 
     try {
@@ -25,43 +27,42 @@ function Navbar() {
         root.classList.remove("dark");
       }
     } catch {
-      /* ignore for SSR */
+        {/*ignore*/}
     }
   }, [theme]);
 
-  const navStyle = { backgroundColor: "var(--nav-bg)" };
-
   return (
     <nav
-      style={navStyle}
-      className={`w-full flex flex-row justify-between flex-wrap py-4 space-x-2 border-amber-600 rounded-lg shadow-lg transition-all hover:scale-105 duration-300 ease-in-out px-4`}
+      className="flex flex-row flex-wrap justify-between w-full px-4 py-4 space-x-2 transition-all duration-300 ease-in-out rounded-lg shadow-lg border-amber-600 hover:scale-105 bg-amber-900"
     >
-      <p className="text-2xl sm:text-2xl md:text-4xl lg:text-4xl italic font-bold text-white hover:text-orange-500 transition-all duration-300">
+      <p className="text-2xl italic font-bold text-white transition-all duration-300 sm:text-2xl md:text-4xl lg:text-4xl hover:text-orange-500">
         Movies
       </p>
+
       <div className="flex items-center gap-4">
         <Link
           to="/"
-          className="text-white hover:text-orange-500 transition-colors duration-300 hover:scale-105"
+          className="text-white transition-colors duration-300 hover:text-orange-500 hover:scale-105"
         >
           Home
         </Link>
         <Link
           to="/MovieDetails"
-          className="text-white hover:text-orange-500 transition-colors duration-300 hover:scale-105"
+          className="text-white transition-colors duration-300 hover:text-orange-500 hover:scale-105"
         >
           MovieDetails
         </Link>
         <Link
           to="/Favorites"
-          className="text-white hover:text-orange-500 transition-colors duration-300 hover:scale-105"
+          className="text-white transition-colors duration-300 hover:text-orange-500 hover:scale-105"
         >
           Favorites
         </Link>
 
+        {/* Dark/Light Toggle Button */}
         <button
           onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
-          className="ml-4 border px-3 py-1 rounded text-white"
+          className="px-3 py-1 ml-4 text-white transition border rounded hover:opacity-90"
         >
           {theme === "dark" ? "Light" : "Dark"}
         </button>

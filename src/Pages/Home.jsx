@@ -20,38 +20,40 @@ function Home() {
   const filteredMovies =
     normalizedQuery && normalizedQuery.length > 0
       ? movies.filter((movie) => {
-          // Helper: normalize and strip diacritics
-          const norm = (v) =>
-            (v || "")
-              .toString()
-              .toLowerCase()
-              .normalize("NFD")
-              .replace(/\p{Diacritic}/gu, "")
-              .replace(/<[^>]+>/g, "");
+        // Helper: normalize and strip diacritics
+        const norm = (v) =>
+          (v || "")
+            .toString()
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/\p{Diacritic}/gu, "")
+            .replace(/<[^>]+>/g, "");
 
-          // Build a combined searchable string from many fields
-          const parts = [];
-          parts.push(norm(movie.name));
-          parts.push(norm((movie.genres || []).join(" ")));
-          parts.push(norm(movie.status));
-          parts.push(norm(movie.premiered));
-          parts.push(norm(movie.language));
-          parts.push(norm(movie.officialSite));
-          parts.push(norm(movie.network?.name));
-          parts.push(norm(movie.webChannel?.name));
-          parts.push(norm(movie.runtime));
-          parts.push(norm(movie.type));
-          parts.push(norm(movie.id));
-          parts.push(norm(movie.externals?.imdb));
-          parts.push(norm(movie.genres));
-          parts.push(norm(movie.summary));
+        // Build a combined searchable string from many fields
+        const parts = [];
+        parts.push(norm(movie.name));
+        parts.push(norm((movie.genres || []).join(" ")));
+        parts.push(norm(movie.status));
+        parts.push(norm(movie.premiered));
+        parts.push(norm(movie.language));
+        parts.push(norm(movie.officialSite));
+        parts.push(norm(movie.network?.name));
+        parts.push(norm(movie.webChannel?.name));
+        parts.push(norm(movie.runtime));
+        parts.push(norm(movie.type));
+        parts.push(norm(movie.id));
+        parts.push(norm(movie.externals?.imdb));
+        parts.push(norm(movie.genres));
+        parts.push(norm(movie.summary));
 
-          const hay = parts.filter(Boolean).join(" ");
-          return hay.includes(normalizedQuery);
-        })
-      : selectedGenre === "All"
-      ? movies
-      : movies.filter((movie) => movie.genres.includes(selectedGenre));
+        const hay = parts.filter(Boolean).join(" ");
+        return hay.includes(normalizedQuery);
+      })
+    : (
+        selectedGenre === "All"
+          ? movies
+          : movies.filter((movie) => movie.genres.includes(selectedGenre))
+      );
 
   return (
     <div className="bg-white flex flex-col justify-center items-center text-center">

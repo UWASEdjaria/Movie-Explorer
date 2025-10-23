@@ -8,14 +8,14 @@ function MovieDetails() {
   // recently-viewed removed
 
   return (
-    <div className="flex flex-col items-center mt-10 px-4">
-      <h1 className="text-3xl font-bold mb-4">Movie Details</h1>
+    <div className="flex flex-col items-center px-4 mt-10">
+      <h1 className="mb-4 text-3xl font-bold">Movie Details</h1>
 
       {/* recently-viewed removed */}
 
       {movie ? (
         <div className="flex flex-col items-center w-full max-w-4xl">
-          <h2 className="text-2xl font-bold mb-2">{movie.name}</h2>
+          <h2 className="mb-2 text-2xl font-bold">{movie.name}</h2>
           <img
             src={
               movie.image?.original ||
@@ -24,11 +24,11 @@ function MovieDetails() {
               "/images/movie.jpg"
             }
             alt={movie.name}
-            className="w-full h-auto rounded mb-4"
+            className="w-full h-auto mb-4 rounded"
           />
 
           {/* Details block */}
-          <div className="w-full bg-gray-200 dark:bg-gray-800 p-6 rounded text-left">
+          <div className="w-full p-6 text-left bg-gray-200 rounded dark:bg-gray-800">
             <div className="mb-4">
               <strong>Genres:</strong>{" "}
               {movie.genres?.join ? movie.genres.join(", ") : movie.genres}

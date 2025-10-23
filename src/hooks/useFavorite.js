@@ -8,8 +8,13 @@ export default function useFavorites() {
     setFavorites(list);
   };
 
-  const addFavorite = (movie) => saveFavorites([...favorites, movie]);
-  const removeFavorite = (id) => saveFavorites(favorites.filter(m => m.id !== id));
+  const addFavorite = (movie) => {
+    // avoid duplicates by id
+    if (!movie || favorites.some((m) => m.id === movie.id)) return;
+    saveFavorites([...favorites, movie]);
+  };
+
+  const removeFavorite = (id) => saveFavorites(favorites.filter((m) => m.id !== id));
 
   return { favorites, addFavorite, removeFavorite };
 }

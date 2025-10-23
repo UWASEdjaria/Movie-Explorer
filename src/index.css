@@ -1,1 +1,11 @@
-@import 'tailwindcss'
+@import 'tailwindcss';
+/* Theme variables used by components (navbar uses --nav-bg) */
+:root {
+	--nav-bg: #b45309; /* amber-700 by default */
+	--nav-text: #ffffff;
+}
+
+.dark {
+	--nav-bg: #0f172a; /* dark slate for dark mode */
+	--nav-text: #e5e7eb;
+}

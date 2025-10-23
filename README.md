@@ -68,6 +68,7 @@ Tailwind CSS (with dark mode)
 JavaScript (ES6+)
 
 TVMaze API for movie data
-Live Demo
+
+ # Live Demo
 
 []

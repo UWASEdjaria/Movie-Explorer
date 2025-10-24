@@ -70,12 +70,12 @@ function Home({ addToFavorites, favorites }) {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center p-4">
-          <p className="text-red-600 text-lg mb-4">{error}</p>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="p-4 text-center">
+          <p className="mb-4 text-lg text-red-600">{error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700 transition-colors"
+            className="px-4 py-2 text-white transition-colors rounded bg-amber-600 hover:bg-amber-700"
           >
             Retry
           </button>
@@ -85,8 +85,8 @@ function Home({ addToFavorites, favorites }) {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-center">Popular Movies & TV Shows</h1>
+    <div className="container px-4 py-8 mx-auto">
+      <h1 className="mb-6 text-3xl font-bold text-center">Popular Movies & TV Shows</h1>
       
       {/* Search Input */}
       <div className="max-w-2xl mx-auto mb-8">
@@ -96,20 +96,20 @@ function Home({ addToFavorites, favorites }) {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search movies or genres..."
-            className="w-full px-4 py-3 pl-12 pr-10 text-white bg-amber-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 placeholder-amber-300"
+            className="w-full px-4 py-3 pl-12 pr-10 text-white rounded-lg bg-amber-800 focus:outline-none focus:ring-2 focus:ring-amber-500 placeholder-amber-300"
           />
-          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-300">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="absolute transform -translate-y-1/2 left-3 top-1/2 text-amber-300">
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-amber-300 hover:text-white"
+              className="absolute transform -translate-y-1/2 right-3 top-1/2 text-amber-300 hover:text-white"
               aria-label="Clear search"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -117,7 +117,7 @@ function Home({ addToFavorites, favorites }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {(searchQuery ? filteredMovies : movies).map((movie) => (
           <MovieCard
             key={movie.id}
@@ -127,7 +127,7 @@ function Home({ addToFavorites, favorites }) {
           />
         ))}
         {searchQuery && filteredMovies.length === 0 && (
-          <div className="col-span-full text-center py-8">
+          <div className="py-8 text-center col-span-full">
             <p className="text-gray-600 dark:text-gray-400">No movies found matching "{searchQuery}"</p>
           </div>
         )}

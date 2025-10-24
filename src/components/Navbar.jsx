@@ -9,7 +9,7 @@ function Navbar({ isDarkMode, toggleDarkMode }) {
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0">
+            <Link to="/" className="flex shrink-0">
               <p className="text-2xl font-bold text-white transition-colors hover:text-orange-100">
                 Movie Explorer
               </p>

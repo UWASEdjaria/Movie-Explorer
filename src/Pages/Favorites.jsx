@@ -1,35 +1,52 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import MovieCard from "../components/MovieCard";
-import useFavorites from "../hooks/useFavorite";
 
-function Favorites() {
-  const { favorites, removeFavorite } = useFavorites();
-
-  const handleRemoveFavorite = (movie) => {
-    removeFavorite(movie.id);
-  };
-
-  if (!favorites || favorites.length === 0)
-    return <p className="mt-10 text-xl">No favorite movies yet.</p>;
+function Favorites({ favorites, removeFromFavorites }) {
+  function handleRemoveFavorite(movie) {
+    if (window.confirm(`Remove ${movie.name} from favorites?`)) {
+      removeFromFavorites(movie.id);
+    }
+  }
 
   return (
-    <div className="flex flex-col justify-center items-center text-center">
-      <h1 className="text-4xl font-bold text-orange-900 mb-6">
-        Your Favorites
-      </h1>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
-        {favorites.map((movie) => (
-          <MovieCard
-            key={movie.id}
-            movie={movie}
-            image={movie.image?.medium || "/images/default-movie.jpg"}
-            name={movie.name}
-            onAddFavorite={() => handleRemoveFavorite(movie)} // reuse button to remove
-            confirmMessage={`Remove "{title}" from favorites?`}
-            successMessage={`"{title}" removed from favorites.`}
-          />
-        ))}
+    <div className="p-4 min-h-screen">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="mb-6 text-3xl font-bold text-center text-orange-900 dark:text-orange-300">
+          My Favorite Movies
+        </h1>
+        
+        {favorites.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-xl text-gray-600 dark:text-gray-300 mb-4">
+              Your favorites list is empty.
+            </p>
+            <Link 
+              to="/" 
+              className="inline-block bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-300"
+            >
+              Browse Movies
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {favorites.map(function(movie) {
+              return (
+                <MovieCard
+                  key={movie.id}
+                  movie={movie}
+                  onAddFavorite={function() {
+                    handleRemoveFavorite(movie);
+                  }}
+                  buttonLabel="Remove from Favorites"
+                  isFavorite={true}
+                  confirmMessage=""
+                  successMessage={`${movie.title} removed from favorites!`}
+                />
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

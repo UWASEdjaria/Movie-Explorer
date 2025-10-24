@@ -1,92 +1,136 @@
-import React, { useState } from "react";
-import Search from "../components/Search";
+import React, { useState, useEffect } from "react";
 import MovieCard from "../components/MovieCard";
-import CategoryFilter from "../components/CategoryFilter";
-import { useFetchMovies } from "../hooks/useFetchMovies";
-import useFavorites from "../hooks/useFavorite";
 
-function Home() {
-  const { movies, loading } = useFetchMovies();
-  const [selectedGenre, setSelectedGenre] = useState("All");
-  const [searchQuery, setSearchQuery] = useState("");
-  const { addFavorite } = useFavorites();
+function Home({ addToFavorites, favorites }) {
+  const [movies, setMovies] = useState([]);
+  const [filteredMovies, setFilteredMovies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  if (loading) return <p className="mt-10 text-xl">Loading movies...</p>;
+  // Fetch movies from the API
+  useEffect(function() {
+    async function fetchMovies() {
+      try {
+     
+        const response = await fetch('https://api.tvmaze.com/shows');
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch movies');
+        }
+        
+        const data = await response.json();
+        // Transform the data to match our needs
+        const formattedMovies = data.map(function(show) {
+          return {
+            id: show.id,
+            name: show.name,
+            image: show.image?.medium,
+            summary: show.summary,
+            rating: show.rating?.average,
+            genres: show.genres
+          };
+        });
+        
+        setMovies(formattedMovies);
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching movies:", err);
+        setError("Failed to load movies. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    }
 
-  // When a search query exists, search across the whole dataset (name, genres,
-  // summary, status, premiered). Otherwise apply the selected genre filter.
-  const normalizedQuery = (searchQuery || "").trim().toLowerCase();
+    fetchMovies();
+  }, []);
 
-  const filteredMovies =
-    normalizedQuery && normalizedQuery.length > 0
-      ? movies.filter((movie) => {
-        // Helper: normalize and strip diacritics
-        const norm = (v) =>
-          (v || "")
-            .toString()
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/\p{Diacritic}/gu, "")
-            .replace(/<[^>]+>/g, "");
+  function handleAddToFavorites(movie) {
+    addToFavorites(movie);
+  }
 
-        // Build a combined searchable string from many fields
-        const parts = [];
-        parts.push(norm(movie.name));
-        parts.push(norm((movie.genres || []).join(" ")));
-        parts.push(norm(movie.status));
-        parts.push(norm(movie.premiered));
-        parts.push(norm(movie.language));
-        parts.push(norm(movie.officialSite));
-        parts.push(norm(movie.network?.name));
-        parts.push(norm(movie.webChannel?.name));
-        parts.push(norm(movie.runtime));
-        parts.push(norm(movie.type));
-        parts.push(norm(movie.id));
-        parts.push(norm(movie.externals?.imdb));
-        parts.push(norm(movie.genres));
-        parts.push(norm(movie.summary));
+  // Update filtered movies when search query or movies change
+  useEffect(() => {
+    const filtered = movies.filter(movie => 
+      movie.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      movie.genres.some(genre => 
+        genre.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    );
+    setFilteredMovies(filtered);
+  }, [searchQuery, movies]);
 
-        const hay = parts.filter(Boolean).join(" ");
-        return hay.includes(normalizedQuery);
-      })
-    : (
-        selectedGenre === "All"
-          ? movies
-          : movies.filter((movie) => movie.genres.includes(selectedGenre))
-      );
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-xl">Loading movies...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center p-4">
+          <p className="text-red-600 text-lg mb-4">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700 transition-colors"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="bg-white flex flex-col justify-center items-center text-center">
-      <h1 className="text-4xl md:text-5xl font-bold text-orange-900 mb-4 mt-6 m-6">
-        Welcome to Movie Explorer
-      </h1>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-6 text-center">Popular Movies & TV Shows</h1>
+      
+      {/* Search Input */}
+      <div className="max-w-2xl mx-auto mb-8">
+        <div className="relative">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search movies or genres..."
+            className="w-full px-4 py-3 pl-12 pr-10 text-white bg-amber-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 placeholder-amber-300"
+          />
+          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-300">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-amber-300 hover:text-white"
+              aria-label="Clear search"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
+      </div>
 
-      <p className="text-black  text-2xl sm:text-2xl md:text-4xl lg:text-4xl italic leading-relaxed mt-5">
-        Discover popular movies, explore details, <br />
-        and save your favorites — all in one place!
-      </p>
-
-      <Search
-        value={searchQuery}
-        onChange={setSearchQuery}
-        onSearch={setSearchQuery}
-      />
-      <CategoryFilter
-        selectedGenre={selectedGenre}
-        setSelectedGenre={setSelectedGenre}
-      />
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
-        {filteredMovies.map((movie) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+        {(searchQuery ? filteredMovies : movies).map((movie) => (
           <MovieCard
             key={movie.id}
             movie={movie}
-            image={movie.image?.medium || ""}
-            name={movie.name}
-            onAddFavorite={() => addFavorite(movie)}
-            confirmMessage={`Add "{title}" to favorites?`}
-            successMessage={`"{title}" added to favorites.`}
+            onAddFavorite={() => handleAddToFavorites(movie)}
+            isFavorite={favorites.some((fav) => fav.id === movie.id)}
           />
         ))}
+        {searchQuery && filteredMovies.length === 0 && (
+          <div className="col-span-full text-center py-8">
+            <p className="text-gray-600 dark:text-gray-400">No movies found matching "{searchQuery}"</p>
+          </div>
+        )}
       </div>
     </div>
   );

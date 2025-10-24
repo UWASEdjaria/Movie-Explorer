@@ -1,9 +1,25 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "./public/index.html"
+  ],
   darkMode: 'class',
-  content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: {
+          light: '#fbbf24',
+          DEFAULT: '#f59e0b',
+          dark: '#d97706',
+        },
+        dark: {
+          bg: '#1a202c',
+          text: '#e2e8f0',
+          card: '#2d3748',
+        }
+      }
+    },
   },
   plugins: [],
 };

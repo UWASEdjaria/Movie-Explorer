@@ -1,69 +1,49 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-// MovieCard supports optional confirm and success messages
-function MovieCard({
-  movie,
-  image,
-  name,
-  onAddFavorite,
-  confirmMessage,
-  successMessage,
-  buttonLabel = "Add to Favorites",
-}) {
-  const navigate = useNavigate();
-  // recently-viewed feature removed
-  const handleClick = () => {
-    // if a confirm message is provided, show confirm dialog
-    if (confirmMessage) {
-      const ok = window.confirm(confirmMessage.replace("{title}", name));
-      if (!ok) return;
-    }
-
-    // call callback
-    onAddFavorite && onAddFavorite();
-
-    // show success if provided
-    if (successMessage) {
-      window.alert(successMessage.replace("{title}", name));
-    }
-  };
-  const displayImage = image || movie?.image || movie?.image?.medium || "";
-
-  const handleDetails = (e) => {
-    e.stopPropagation();
-    if (!movie?.id) return;
-    // Navigate to the MovieDetails page and pass the movie in location state
-    navigate(`/MovieDetails`, { state: { movie } });
-  };
-
+function MovieCard({ movie, onAddFavorite, isFavorite }) {
   return (
-    <div className="border p-4 rounded shadow hover:shadow-lg transition w-80 mb-6">
+    <div className="p-4 text-center transition-colors duration-200 bg-white border rounded-lg shadow-lg border-g dark:bg-gray-800">
       <img
-        src={displayImage}
-        alt={name || movie?.name}
-        className="w-full h-96 object-cover rounded"
+        src={movie.image}
+        alt={movie.name}
+        className="object-cover w-full mb-4 rounded-lg h-80"
       />
-      <h1 className="text-2xl font-bold text-orange-900 mt-4">
-        {name || movie?.name}
-      </h1>
+      <h2 className="mb-2 text-lg font-bold text-gray-900 dark:text-white">{movie.name}</h2>
+      <p className="mb-2 text-sm text-gray-700 dark:text-gray-300">{movie.genres?.join(", ")}</p>
+      <p className="mb-2 text-sm">⭐ {movie.rating || "N/A"}</p>
 
-      <div className="flex gap-3 mt-2">
-        <button
-          onClick={handleDetails}
-          className="bg-amber-600 text-white py-2 px-4 rounded font-bold hover:opacity-90"
+      <div className="flex flex-col mt-3 space-y-2">
+        <Link
+          to={`/movie/${movie.id}`}
+          className="px-4 py-2 text-center text-white transition-colors bg-orange-900 rounded hover:bg-orange-700"
         >
-          Details
-        </button>
-
+          View Details
+        </Link>
         <button
           onClick={(e) => {
-            e.stopPropagation();
-            handleClick();
+            if (isFavorite) {
+              const shouldRemove = window.confirm(`Remove "${movie.name}" from your favorites?`);
+              if (!shouldRemove) {
+                e.preventDefault();
+                return;
+              }
+            } else {
+              const shouldAdd = window.confirm(`Add "${movie.name}" to your favorites?`);
+              if (!shouldAdd) {
+                e.preventDefault();
+                return;
+              }
+            }
+            onAddFavorite();
           }}
-          className="border-2 border-amber-600 py-2 px-4 rounded-lg font-bold hover:bg-amber-600 transition-all hover:scale-105 duration-300"
+          className={`px-4 py-2 text-white rounded ${
+            isFavorite 
+              ? 'bg-red-600 hover:bg-red-700' 
+              : 'bg-orange-900 hover:bg-orange-800'
+          } transition-colors`}
         >
-          {buttonLabel}
+          {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
         </button>
       </div>
     </div>

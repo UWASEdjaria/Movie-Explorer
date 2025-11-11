@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import MovieCard from "../components/MovieCard";
 
@@ -10,20 +9,20 @@ function Favorites({ favorites, removeFromFavorites }) {
   }
 
   return (
-    <div className="p-4 min-h-screen">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen p-4">
+      <div className="mx-auto max-w-7xl">
         <h1 className="mb-6 text-3xl font-bold text-center text-orange-900 dark:text-orange-300">
           My Favorite Movies
         </h1>
         
         {favorites.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-xl text-gray-600 dark:text-gray-300 mb-4">
+          <div className="py-12 text-center">
+            <p className="mb-4 text-xl text-gray-600 dark:text-gray-300">
               Your favorites list is empty.
             </p>
             <Link 
               to="/" 
-              className="inline-block bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-300"
+              className="inline-block px-6 py-2 font-bold text-white transition-colors duration-300 rounded-lg bg-amber-600 hover:bg-amber-700"
             >
               Browse Movies
             </Link>

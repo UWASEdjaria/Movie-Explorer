@@ -48,6 +48,7 @@ export default function MovieDetails({ onToggleFavorite, favorites = [] }) {
       }
     };
 
+    
     fetchMovie().catch(err => {
       console.error('Unhandled error in fetchMovie:', err);
       setError('An unexpected error occurred');
@@ -218,6 +219,7 @@ export default function MovieDetails({ onToggleFavorite, favorites = [] }) {
                 </p>
               </div>
             )}
+
 
             {status && (
               <div>

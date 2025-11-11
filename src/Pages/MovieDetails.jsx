@@ -135,7 +135,7 @@ export default function MovieDetails({ onToggleFavorite, favorites = [] }) {
     </Link>
   </div>;
 
-  const { name, image, rating, runtime, premiered, genres, summary, network, schedule, status, language } = movie;
+  const { name, image, rating, runtime, premiered, genres, summary, network, schedule, status } = movie;
   const imageUrl = image?.original || image?.medium || PLACEHOLDER_IMAGE;
   const isFavorite = favorites.some(fav => fav.id === movie.id);
 
